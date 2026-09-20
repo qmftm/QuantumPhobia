@@ -2,5 +2,5 @@ name: QuantumPhobia
 version: '${version}'
 
 main: me.qmftm.quantumPhobia.QuantumPhobia
-api-version: '26.3'
+api-version: '26.2'
 load: POSTWORLD
