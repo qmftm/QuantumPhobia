@@ -1,0 +1,43 @@
+# QuantumPhobia가 서버 시작 때 넣어두는 파일입니다.
+# 파일이 이미 있으면 덮어쓰지 않으므로 효과 내용은 자유롭게 고쳐도 됩니다.
+# 단, 이펙트 id는 QuantumPhobia config.yml의 overdose.levels[].effect 와 같아야 합니다.
+# 심장박동과 환각 팬텀은 QuantumPhobia가 직접 처리하고, 여기엔 포션 효과만 둡니다.
+# 과다복용 표시는 QuantumPhobia가 정신력과 함께 한 줄로 액션바에 그리므로 display는 none으로 둡니다.
+# 멀미(nausea)는 짧게 걸면 화면 효과가 제대로 나오지 않아 최소 15초가 필요하므로 period-ticks를 300 이상으로 두세요.
+effects:
+
+  overdose_1:
+    display-name: "<red>과다복용 I</red>"
+    period-ticks: 300           # 포션 효과는 period-ticks + 20틱 동안 걸립니다. 멀미는 최소 15초(300틱)가 필요합니다.
+    display: none
+    actions:
+      - type: potion
+        effect: nausea
+        amplifier: 0
+
+  overdose_2:
+    display-name: "<red>과다복용 II</red>"
+    period-ticks: 300           # 포션 효과는 period-ticks + 20틱 동안 걸립니다. 멀미는 최소 15초(300틱)가 필요합니다.
+    display: none
+    actions:
+      - type: potion
+        effect: nausea
+        amplifier: 0
+      - type: potion
+        effect: slowness
+        amplifier: 0
+
+  overdose_3:
+    display-name: "<dark_red>과다복용 III</dark_red>"
+    period-ticks: 300           # 포션 효과는 period-ticks + 20틱 동안 걸립니다. 멀미는 최소 15초(300틱)가 필요합니다.
+    display: none
+    actions:
+      - type: potion
+        effect: nausea
+        amplifier: 0
+      - type: potion
+        effect: slowness
+        amplifier: 1
+      - type: potion
+        effect: weakness
+        amplifier: 0

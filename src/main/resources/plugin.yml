@@ -4,3 +4,17 @@ version: '${version}'
 main: me.qmftm.quantumPhobia.QuantumPhobia
 api-version: '26.2'
 load: POSTWORLD
+softdepend: [QuantumAdders]
+
+commands:
+  qph:
+    description: 플레이어에게 특정 공포증을 부여하거나 제거합니다.
+    usage: /<command> give <player> <phobia> [duration] | /<command> remove <player> | /<command> info <player> | /<command> insanity <player> [set|add <value>] | /<command> willpower <player> [set|add <value>] | /<command> list
+    aliases: [quantumphobia]
+    permission: quantumphobia.admin
+    permission-message: 이 명령어를 사용할 권한이 없습니다.
+
+permissions:
+  quantumphobia.admin:
+    description: QuantumPhobia 관리자 명령어 사용 권한
+    default: op

@@ -17,6 +17,7 @@
     </properties>
 
     <build>
+        <finalName>QuantumPhobia-${project.version}</finalName>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
@@ -46,6 +47,16 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.png</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.png</include>
+                </includes>
             </resource>
         </resources>
     </build>
@@ -62,6 +73,12 @@
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>26.2.build.112-stable</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.qmftm</groupId>
+            <artifactId>QuantumAdders</artifactId>
+            <version>0.1.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

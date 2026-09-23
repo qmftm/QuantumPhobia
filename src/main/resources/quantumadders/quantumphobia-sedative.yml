@@ -1,0 +1,20 @@
+# QuantumPhobia가 서버 시작 때 넣어두는 파일입니다.
+# 파일이 이미 있으면 덮어쓰지 않으므로 이름·설명 등은 자유롭게 고쳐도 됩니다.
+# 단, 아이템 id(sedative)는 QuantumPhobia가 찾는 이름이라 바꾸면 효과가 없어집니다.
+# 효과량은 QuantumPhobia config.yml의 sedative 항목에서 바꿉니다.
+items:
+
+  sedative:
+    base: PAPER
+    display-name: "<green>진정제"
+    lore:
+      - "<gray>마시면 마음이 가라앉습니다."
+    texture: sedative
+    max-stack-size: 16
+    food:
+      nutrition: 0
+      saturation: 0
+      can-always-eat: true
+      eat-seconds: 1.6
+    bedrock:
+      creative-category: ITEMS

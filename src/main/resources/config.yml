@@ -1,0 +1,122 @@
+# ─────────────────────────────────────────────────────────────
+# 수치 변화 표기법
+#   insanity:  정신병 수치 변화 (+면 증가, -면 감소)
+#   willpower: 정신력 변화     (+면 회복, -면 감소)
+#   소수도 됩니다. 매초 적용되는 항목은 "1초당" 변화량이고, 소수점은 모였다가 1이 되면 반영됩니다.
+#   정신병 수치가 "오를" 때는 항상 날씨 배율이 곱해지고 정신력이 일부를 막아 줍니다. (insanity, willpower 항목 참고)
+# ─────────────────────────────────────────────────────────────
+
+# 공포증 약: 공포증을 없애지 않고, 먹은 뒤 일정 시간 동안 증상만 막아 줍니다.
+# 다시 먹으면 시간이 더해지지 않고 처음부터 다시 셉니다. (주기적으로 먹어야 함)
+medication:
+  protection-seconds: 300
+  # 마지막 복용 후 이 시간보다 빨리 먹으면 "너무 짧은 간격"
+  min-interval-seconds: 60
+  # 정상적인 간격으로 복용
+  normal-dose:
+    insanity: -10
+    willpower: 5
+  # 너무 짧은 간격으로 복용
+  too-soon:
+    insanity: 10
+  # 과다복용 상태에서 복용 (너무 짧은 간격보다 우선)
+  during-overdose:
+    insanity: 15
+
+# 공포증이 있는데 약 기운이 없을 때, 1초마다
+phobia-symptoms:
+  insanity-per-second: 1
+
+# 약을 짧은 시간에 여러 번 먹으면 과다복용 상태가 됩니다.
+# 과다복용 중에 또 과다복용하면 다음 단계로 올라가고, 끝나면 단계가 초기화됩니다.
+overdose:
+  # window-seconds 안에 dose-count번 먹으면 과다복용 (또는 한 단계 상승)
+  dose-count: 3
+  window-seconds: 20
+  # 과다복용하거나 단계가 오를 때마다
+  on-overdose:
+    willpower: -20
+  # 환각 팬텀이 나타날 때마다
+  hallucination:
+    willpower: -5
+
+  # 위에서부터 1단계, 2단계, ... 항목을 늘리면 단계도 늘어납니다.
+  # 과다복용 중 정신병 수치가 100이 되면 환각 팬텀이 한 마리 늘어나고 수치는 0으로 돌아갑니다.
+  levels:
+    - duration-seconds: 60        # 지속 시간 (단계가 오르면 이 값으로 새로 시작)
+      effect: overdose_1          # QuantumAdders effects/ 에 정의된 커스텀 이펙트 id
+      insanity-per-second: 2      # 과다복용 중 매초 오르는 정신병 수치
+      heartbeat-min-ticks: 16     # 심장박동 간격 (틱, 20틱 = 1초)
+      heartbeat-max-ticks: 60
+    - duration-seconds: 90
+      effect: overdose_2
+      insanity-per-second: 3
+      heartbeat-min-ticks: 10
+      heartbeat-max-ticks: 36
+    - duration-seconds: 120
+      effect: overdose_3
+      insanity-per-second: 5
+      heartbeat-min-ticks: 5
+      heartbeat-max-ticks: 20
+
+# 회복 아이템 (진정제)
+sedative:
+  insanity: -15
+  willpower: 10
+
+# 일상의 스트레스와 회복
+stress:
+  # 피해를 입을 때마다
+  damage:
+    insanity: 1
+    willpower: -1
+  # 침대에서 실제로 잠들 때 (한 번)
+  sleep:
+    insanity: -30
+    willpower: 40
+  # 수면 부족: 마지막으로 잔 뒤 after-ticks 이상 지나면 1초마다 (72000틱 = 마인크래프트 3일, 바닐라 팬텀 기준)
+  sleep-deprivation:
+    after-ticks: 72000
+    insanity: 0.05
+    willpower: -0.05
+  # 위험한 상황: 적대 몹이 가까이 있거나 체력이 낮은 상태가 after-seconds 이상 이어지면 1초마다
+  danger:
+    hostile-radius: 8
+    low-health: 6               # 체력 3칸
+    after-seconds: 10
+    willpower: -0.2
+  # 정신력이 below 이하로 after-seconds 이상 이어지면 1초마다
+  low-willpower:
+    below: 30
+    after-seconds: 60
+    insanity: 0.1
+  # 정신병 수치가 above 이상으로 after-seconds 이상 이어지면 1초마다
+  high-insanity:
+    above: 70
+    after-seconds: 60
+    willpower: -0.1
+  # 안전한 장소에서 휴식: 가만히 있거나(still-seconds 이상) 앉아 있고, 주변에 적대 몹이 없고,
+  # 밝고, 최근에 다치지 않았고, 과다복용이 아니면 1초마다
+  safe-rest:
+    still-seconds: 5
+    hostile-radius: 12
+    min-light: 8
+    no-damage-seconds: 10
+    insanity: -0.1
+    willpower: 0.2
+  # 스트레스 없는 상태: 다치지 않고, 위험하지 않고, 과다복용·수면 부족이 아니고,
+  # 약 기운 없는 공포증도 없는 상태가 after-seconds 이상 이어지면 1초마다
+  calm:
+    after-seconds: 60
+    insanity: -0.02
+
+# 정신병 수치 (0~100, 플레이어에게는 보이지 않음)
+insanity:
+  # 비·천둥이 칠 때 정신병 상승량에 곱하는 배율 (천둥이 치면 천둥 배율만 적용)
+  rain-multiplier: 1.5
+  thunder-multiplier: 2.0
+
+# 정신력 (0~100, 처음엔 100, 바뀔 때 잠깐 액션바에 표시)
+willpower:
+  # 정신병 수치가 오를 때 정신력 100이면 막아 주는 비율 (정신력에 비례, 0.5면 100일 때 50%, 50일 때 25%)
+  resistance: 0.5
